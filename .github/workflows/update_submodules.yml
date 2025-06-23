@@ -1,22 +1,24 @@
 name: Update Submodules
+
 on:
   schedule:
-    - cron: "* * * * *"
-  # Allows you to run this workflow manually from the Actions tab or through HTTP API
-  workflow_dispatch:
+    - cron: '0 * * * *'  # 每小时运行一次（避免每分钟触发造成滥用）
+  workflow_dispatch:      # 手动触发
+
 jobs:
   update_sdk:
     runs-on: ubuntu-latest
+
     steps:
-      # Checkout the repository to the GitHub Actions runner
-      - name: Checkout
+      - name: Checkout repository
         uses: actions/checkout@v3
+        with:
+          submodules: 'recursive'
 
       - name: Update submodules
         run: |
           git submodule update --init --remote
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
-          git commit -am "Update SDK" || exit 0
-          git push || exit 0          
-
+          git commit -am "Update SDK" || echo "No changes to commit"
+          git push || echo "Nothing to push"
