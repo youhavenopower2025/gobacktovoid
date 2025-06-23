@@ -413,7 +413,7 @@ class MainService : Service() {
         }
 
          if (mediaProjection != null) {
-            Log.w(logTag, "startCapture success,mediaProjection is null ok") 
+            Log.w(logTag, "startCapture success,mediaProjection is null ok 001") 
          }
         
         updateScreenInfo(resources.configuration.orientation)
