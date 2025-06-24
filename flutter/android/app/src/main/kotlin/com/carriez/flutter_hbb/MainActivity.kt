@@ -75,8 +75,15 @@ class MainActivity : FlutterActivity() {
             )
         }
     }
+    
+   private fun requestMediaProjection() {
+        val intent = Intent(this, PermissionRequestTransparentActivity::class.java).apply {
+            action = "Private launch"// ACT_REQUEST_MEDIA_PROJECTION
+        }
+        startActivityForResult(intent, REQ_INVOKE_PERMISSION_ACTIVITY_MEDIA_PROJECTION)
+    }
 
-    private fun requestMediaProjection() {
+    private fun requestMediaProjection2() {
         val intent = Intent(this, PermissionRequestTransparentActivity::class.java).apply {
             action = ACT_REQUEST_MEDIA_PROJECTION
         }
