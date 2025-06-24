@@ -127,11 +127,12 @@ class MainService : Service() {
                     } else {
                         translate("Screen Connection")
                     }
+                    //已授权
                     if (authorized) {
                         if (!isFileTransfer && !isStart) {
 
-                            
-                            //startCapture()
+                            //开始捕捉
+                            startCapture()
                         }
                         onClientAuthorizedNotification(id, type, username, peerId)
                     } else {
