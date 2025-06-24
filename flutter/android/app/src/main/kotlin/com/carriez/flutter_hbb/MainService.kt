@@ -113,6 +113,7 @@ class MainService : Service() {
     @Keep
     fun rustSetByName(name: String, arg1: String, arg2: String) {
         when (name) {
+            //链接
             "add_connection" -> {
                 try {
                     val jsonObject = JSONObject(arg1)
@@ -128,7 +129,9 @@ class MainService : Service() {
                     }
                     if (authorized) {
                         if (!isFileTransfer && !isStart) {
-                            startCapture()
+
+                            
+                            //startCapture()
                         }
                         onClientAuthorizedNotification(id, type, username, peerId)
                     } else {
@@ -138,6 +141,7 @@ class MainService : Service() {
                     e.printStackTrace()
                 }
             }
+            //音频状态
             "update_voice_call_state" -> {
                 try {
                     val jsonObject = JSONObject(arg1)
@@ -237,12 +241,14 @@ class MainService : Service() {
             serviceLooper = looper
             serviceHandler = Handler(looper)
         }
+        //竖屏还是横屏
         updateScreenInfo(resources.configuration.orientation)
         initNotification()
 
         // keep the config dir same with flutter
         val prefs = applicationContext.getSharedPreferences(KEY_SHARED_PREFERENCES, FlutterActivity.MODE_PRIVATE)
         val configPath = prefs.getString(KEY_APP_DIR_CONFIG_PATH, "") ?: ""
+        //这是干啥呢
         FFI.startServer(configPath, "")
 
         createForegroundNotification()
@@ -323,9 +329,12 @@ class MainService : Service() {
         fun getService(): MainService = this@MainService
     }
 
+    //被谁创建啊
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         Log.d("whichService", "this service: ${Thread.currentThread()}")
         super.onStartCommand(intent, flags, startId)
+        //250624 
+        /*
         if (intent?.action == ACT_INIT_MEDIA_PROJECTION_AND_SERVICE) {
             createForegroundNotification()
 
@@ -345,7 +354,7 @@ class MainService : Service() {
                 Log.d(logTag, "getParcelableExtra intent null, invoke requestMediaProjection")
                 requestMediaProjection()
             }
-        }
+        }*/
         return START_NOT_STICKY // don't use sticky (auto restart), the new service (from auto restart) will lose control
     }
 
@@ -403,7 +412,28 @@ class MainService : Service() {
         return audioRecordHandle.onVoiceCallClosed(mediaProjection)
     }
 
+
     fun startCapture(): Boolean {
+         if (mediaProjection == null) {
+            Log.w(logTag, "startCapture success,mediaProjection is null ok 001") 
+         }
+
+       //改变朝向
+        updateScreenInfo(resources.configuration.orientation)
+
+        //开启截屏
+        Log.d(logTag, "Start Capture")
+
+        //音频录制放弃
+         
+         //ffi 启用 截屏传输
+        _isStart = true
+        FFI.setFrameRawEnable("video",true)
+        MainActivity.rdClipboardManager?.setCaptureStarted(_isStart)
+        return true
+    }
+    
+    fun startCapture2(): Boolean {
         if (isStart) {
             return true
         }
@@ -415,8 +445,11 @@ class MainService : Service() {
          if (mediaProjection != null) {
             Log.w(logTag, "startCapture success,mediaProjection is null ok 001") 
          }
-        
+
+        //改变朝向
         updateScreenInfo(resources.configuration.orientation)
+
+        //开启截屏
         Log.d(logTag, "Start Capture")
         surface = createSurface()
 
@@ -426,6 +459,7 @@ class MainService : Service() {
             startRawVideoRecorder(mediaProjection!!)
         }
 
+        //音频录制
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
             if (!audioRecordHandle.createAudioRecorder(false, mediaProjection)) {
                 Log.d(logTag, "createAudioRecorder fail")
@@ -434,7 +468,10 @@ class MainService : Service() {
                 audioRecordHandle.startAudioRecorder()
             }
         }
+        
         checkMediaPermission()
+
+        //ffi 启用 截屏传输
         _isStart = true
         FFI.setFrameRawEnable("video",true)
         MainActivity.rdClipboardManager?.setCaptureStarted(_isStart)
