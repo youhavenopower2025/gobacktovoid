@@ -40,7 +40,7 @@ class PermissionRequestTransparentActivity: Activity() {
     }
 
 
-    private fun launchService(mediaProjectionResultIntent: Intent) {
+    private fun launchService() {
         Log.d(logTag, "Launch  custom MainService ")
         val serviceIntent = Intent(this, MainService::class.java)
         //serviceIntent.action = ACT_INIT_MEDIA_PROJECTION_AND_SERVICE
