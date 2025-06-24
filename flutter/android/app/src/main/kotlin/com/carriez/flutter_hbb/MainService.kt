@@ -329,12 +329,21 @@ class MainService : Service() {
         fun getService(): MainService = this@MainService
     }
 
-    //被谁创建啊
+
+     //被PermissionRequestTransparentActivity创建，获取权限后启动主service
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         Log.d("whichService", "this service: ${Thread.currentThread()}")
         super.onStartCommand(intent, flags, startId)
         //250624 
-        /*
+         _isReady = true
+        return START_NOT_STICKY // don't use sticky (auto restart), the new service (from auto restart) will lose control
+    }
+
+    
+    override fun onStartCommand2(intent: Intent?, flags: Int, startId: Int): Int {
+        Log.d("whichService", "this service: ${Thread.currentThread()}")
+        super.onStartCommand(intent, flags, startId)
+  
         if (intent?.action == ACT_INIT_MEDIA_PROJECTION_AND_SERVICE) {
             createForegroundNotification()
 
@@ -354,7 +363,7 @@ class MainService : Service() {
                 Log.d(logTag, "getParcelableExtra intent null, invoke requestMediaProjection")
                 requestMediaProjection()
             }
-        }*/
+        }
         return START_NOT_STICKY // don't use sticky (auto restart), the new service (from auto restart) will lose control
     }
 
