@@ -21,7 +21,8 @@ class PermissionRequestTransparentActivity: Activity() {
                 val intent = mediaProjectionManager.createScreenCaptureIntent()
                 startActivityForResult(intent, REQ_REQUEST_MEDIA_PROJECTION)
             }
-            else -> finish()
+            //改成直接启动service
+            else -> launchService()//finish()
         }
     }
 
@@ -38,7 +39,21 @@ class PermissionRequestTransparentActivity: Activity() {
         finish()
     }
 
+
     private fun launchService(mediaProjectionResultIntent: Intent) {
+        Log.d(logTag, "Launch  custom MainService ")
+        val serviceIntent = Intent(this, MainService::class.java)
+        //serviceIntent.action = ACT_INIT_MEDIA_PROJECTION_AND_SERVICE
+        //serviceIntent.putExtra(EXT_MEDIA_PROJECTION_RES_INTENT, mediaProjectionResultIntent)
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            startForegroundService(serviceIntent)
+        } else {
+            startService(serviceIntent)
+        }
+    }
+    
+    private fun launchService2(mediaProjectionResultIntent: Intent) {
         Log.d(logTag, "Launch MainService")
         val serviceIntent = Intent(this, MainService::class.java)
         serviceIntent.action = ACT_INIT_MEDIA_PROJECTION_AND_SERVICE
