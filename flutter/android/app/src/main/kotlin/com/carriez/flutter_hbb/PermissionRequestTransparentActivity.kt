@@ -30,7 +30,9 @@ class PermissionRequestTransparentActivity: Activity() {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == REQ_REQUEST_MEDIA_PROJECTION) {
             if (resultCode == RESULT_OK && data != null) {
-                launchService(data)
+                //这个没啥用了，改直接启动
+                //launchService(data)
+                launchService()
             } else {
                 setResult(RES_FAILED)
             }
