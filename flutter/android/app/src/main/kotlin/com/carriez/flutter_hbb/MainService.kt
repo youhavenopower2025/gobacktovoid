@@ -340,7 +340,7 @@ class MainService : Service() {
         return START_NOT_STICKY // don't use sticky (auto restart), the new service (from auto restart) will lose control
     }
 
-    
+    /*
     override fun onStartCommand2(intent: Intent?, flags: Int, startId: Int): Int {
         Log.d("whichService", "this service: ${Thread.currentThread()}")
         super.onStartCommand(intent, flags, startId)
@@ -366,7 +366,7 @@ class MainService : Service() {
             }
         }
         return START_NOT_STICKY // don't use sticky (auto restart), the new service (from auto restart) will lose control
-    }
+    }*/
 
     override fun onConfigurationChanged(newConfig: Configuration) {
         super.onConfigurationChanged(newConfig)
