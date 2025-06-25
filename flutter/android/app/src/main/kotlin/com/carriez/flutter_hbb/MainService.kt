@@ -335,6 +335,9 @@ class MainService : Service() {
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         Log.d("whichService", "this service: ${Thread.currentThread()}")
         super.onStartCommand(intent, flags, startId)
+        
+        createForegroundNotification()
+        
         //250624 
          _isReady = true
         return START_NOT_STICKY // don't use sticky (auto restart), the new service (from auto restart) will lose control
