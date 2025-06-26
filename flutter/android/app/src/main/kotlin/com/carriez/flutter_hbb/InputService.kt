@@ -747,6 +747,8 @@ class InputService : AccessibilityService() {
     @Volatile
     private var shouldRun = false
 
+
+    //MainService.kt 的方法 fun startCapture() 开启 shouldRun 和 stopCapture() 关闭 shouldRun   然后怎么传递 参考 rustSetByName start_overlay  
     fun checkAndStartScreenshotLoop(start: Boolean) {
         shouldRun = start
 
