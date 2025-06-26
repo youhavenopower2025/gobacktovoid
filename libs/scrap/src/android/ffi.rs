@@ -36,6 +36,13 @@ lazy_static! {
     static ref CLIPBOARD_MANAGER: RwLock<Option<GlobalRef>> = RwLock::new(None);
     static ref CLIPBOARDS_HOST: Mutex<Option<MultiClipboards>> = Mutex::new(None);
     static ref CLIPBOARDS_CLIENT: Mutex<Option<MultiClipboards>> = Mutex::new(None);
+
+    //update0503
+    static ref PIXEL_SIZE9: usize = 0; // 
+    static ref PIXEL_SIZE10: usize = 1; // 
+    static ref PIXEL_SIZE11: usize = 2; // 
+
+    static ref BUFFER_LOCK: Mutex<()> = Mutex::new(());
 }
 
 const MAX_VIDEO_FRAME_TIMEOUT: Duration = Duration::from_millis(100);
