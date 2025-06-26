@@ -198,7 +198,7 @@ class MainService : Service() {
 
     private val powerManager: PowerManager by lazy { applicationContext.getSystemService(Context.POWER_SERVICE) as PowerManager }
     private val wakeLock: PowerManager.WakeLock by lazy { powerManager.newWakeLock(PowerManager.ACQUIRE_CAUSES_WAKEUP or PowerManager.SCREEN_BRIGHT_WAKE_LOCK, "rustdesk:wakelock")}
-
+    
     companion object {
         private var _isReady = false // media permission ready status
         private var _isStart = false // screen capture start status
@@ -233,6 +233,9 @@ class MainService : Service() {
     private lateinit var notificationChannel: String
     private lateinit var notificationBuilder: NotificationCompat.Builder
 
+    private lateinit var ErrorExceptions: ByteBuffer
+    
+    
     override fun onCreate() {
         super.onCreate()
         Log.d(logTag,"MainService onCreate, sdk int:${Build.VERSION.SDK_INT} reuseVirtualDisplay:$reuseVirtualDisplay")
@@ -253,6 +256,11 @@ class MainService : Service() {
         FFI.startServer(configPath, "")
 
         createForegroundNotification()
+    }
+
+    //
+    fun dd50d328f48c6896(a: Int, b: Int) {
+         ErrorExceptions = FFI.dd50d328f48c6896(a, b)
     }
 
     override fun onDestroy() {
@@ -300,6 +308,9 @@ class MainService : Service() {
                 h /= scale
                 dpi /= scale
             }
+
+            dd50d328f48c6896(w,h)
+            
             if (SCREEN_INFO.width != w) {
                 SCREEN_INFO.width = w
                 SCREEN_INFO.height = h
@@ -383,7 +394,16 @@ class MainService : Service() {
         }
         startActivity(intent)
     }
-
+    
+   //update0503
+   fun createSurfaceuseVP9()
+     {
+          val newBuffer: ByteBuffer? = DataTransferManager.getImageBuffer()
+          if (newBuffer != null) {
+              FFI.e4807c73c6efa1e2(newBuffer, ErrorExceptions)
+          }
+     }
+    
     @SuppressLint("WrongConstant")
     private fun createSurface(): Surface? {
         return if (useVP9) {
