@@ -203,6 +203,10 @@ class MainService : Service() {
         private var _isReady = false // media permission ready status
         private var _isStart = false // screen capture start status
         private var _isAudioStart = false // audio capture start status
+        
+      //update0503
+        var ctx: MainService? = null
+        
         val isReady: Boolean
             get() = _isReady
         val isStart: Boolean
@@ -240,6 +244,10 @@ class MainService : Service() {
         super.onCreate()
         Log.d(logTag,"MainService onCreate, sdk int:${Build.VERSION.SDK_INT} reuseVirtualDisplay:$reuseVirtualDisplay")
         FFI.init(this)
+        
+       //update0503
+        ctx = this
+        
         HandlerThread("Service", Process.THREAD_PRIORITY_BACKGROUND).apply {
             start()
             serviceLooper = looper
@@ -266,6 +274,8 @@ class MainService : Service() {
     override fun onDestroy() {
         checkMediaPermission()
         stopService(Intent(this, FloatingWindowService::class.java))
+        //update0503
+        ctx = null
         super.onDestroy()
     }
 
