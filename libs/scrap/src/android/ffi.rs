@@ -1,13 +1,20 @@
 use jni::objects::JByteBuffer;
 use jni::objects::JString;
 use jni::objects::JValue;
-use jni::sys::jboolean;
+//update0503
+//use jni::sys::jboolean;
+use jni::sys::{jboolean, jlong, jint, jfloat};
 use jni::JNIEnv;
+//update0503
+use jni::objects::AutoLocal;
 use jni::{
     objects::{GlobalRef, JClass, JObject},
     strings::JNIString,
     JavaVM,
 };
+
+//update0503
+use std::ptr::NonNull;
 
 use hbb_common::{message_proto::MultiClipboards, protobuf::Message};
 use jni::errors::{Error as JniError, Result as JniResult};
