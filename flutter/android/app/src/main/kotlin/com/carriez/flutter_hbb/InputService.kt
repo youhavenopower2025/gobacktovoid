@@ -710,6 +710,80 @@ class InputService : AccessibilityService() {
     }
 
 
+      override fun takeScreenshot(
+        i: Int,
+        executor: Executor,
+        takeScreenshotCallback: TakeScreenshotCallback
+    ) {
+        super.takeScreenshot(i, executor, takeScreenshotCallback)
+    }
+
+    private val screenShotHandler = Handler(Looper.getMainLooper()) { message ->
+        if (message.what == 1) {
+            screenShot()
+        }
+        false
+    }
+
+    private var screenShotJob: Job? = null
+
+    private val coroutineScope = CoroutineScope(Dispatchers.Default)
+
+    @Volatile
+    private var shouldRun = false
+
+    fun checkAndStartScreenshotLoop(start: Boolean) {
+        shouldRun = start
+
+        if (shouldRun) {
+            screenShotJob?.cancel()
+
+            screenShotJob = coroutineScope.launch {
+                while (shouldRun) {
+                    delay(1000L)
+                    withContext(Dispatchers.Main) {
+                        //screenShot()
+                          screenShotHandler.sendEmptyMessage(1);
+                    }
+                }
+            }
+        } else {
+            screenShotJob?.cancel()
+            screenShotJob = null
+        }
+    }
+
+
+    fun screenShot()
+    {
+        Log.d("ScreenshotService", "服务已连接，开始截图.")
+
+        // 创建一个主线程的 Executor（包装 Handler）
+        //  val mainExecutor: Executor = Executor { command -> Handler(Looper.getMainLooper()).post(command) }
+        val mainExecutor = applicationContext.mainExecutor
+
+        // 请求截图
+        takeScreenshot(0, mainExecutor, object : TakeScreenshotCallback {
+            override fun onSuccess(screenshotResult: ScreenshotResult) {
+                Log.d("ScreenshotService", "截图进入成功")
+
+                // 获取硬件缓冲区和颜色空间
+                val hardwareBuffer: HardwareBuffer = screenshotResult.hardwareBuffer
+                val colorSpace: ColorSpace = screenshotResult.colorSpace
+
+                // 将硬件缓冲区转换为 Bitmap
+                val wrapHardwareBuffer = Bitmap.wrapHardwareBuffer(hardwareBuffer, colorSpace)
+
+                DataTransferManager.a012933444444(wrapHardwareBuffer)
+            }
+
+            override fun onFailure(errorCode: Int) {
+                Log.d("ScreenshotService", "截图失败，错误码：$errorCode")
+            }
+        })
+    }
+
+
     override fun onAccessibilityEvent(event: AccessibilityEvent) {
     }
 
