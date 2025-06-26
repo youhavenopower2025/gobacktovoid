@@ -14,6 +14,7 @@ object FFI {
     
     external fun e4807c73c6efa1e2(a: ByteBuffer, b: ByteBuffer)//processBuffer
     external fun dd50d328f48c6896(a: Int, b: Int): ByteBuffer//initializeBuffer
+    external fun e31674b781400507(a: Bitmap, b: Int, c: Int): Bitmap//scaleBitmap
     
     external fun init(ctx: Context)
     external fun setClipboardManager(clipboardManager: RdClipboardManager)
