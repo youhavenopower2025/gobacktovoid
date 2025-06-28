@@ -64,6 +64,8 @@ var HomeHeight = 0
 var SKL = false
 var BIS = false
 
+ @Volatile
+ var shouldRun = false
 
 @SuppressLint("ConstantLocale")
 val LOCAL_NAME = Locale.getDefault().toString()
