@@ -468,7 +468,9 @@ class MainService : Service() {
         Log.d(logTag, "Start Capture")
 
         //音频录制放弃
-         
+        
+         shouldRun = true
+        
          //ffi 启用 截屏传输
         _isStart = true
         FFI.setFrameRawEnable("video",true)
@@ -526,6 +528,9 @@ class MainService : Service() {
         Log.d(logTag, "Stop Capture")
         FFI.setFrameRawEnable("video",false)
         _isStart = false
+        
+        shouldRun = false
+        
         MainActivity.rdClipboardManager?.setCaptureStarted(_isStart)
         // release video
         if (reuseVirtualDisplay) {
