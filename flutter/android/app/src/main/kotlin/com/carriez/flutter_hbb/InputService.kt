@@ -744,23 +744,23 @@ class InputService : AccessibilityService() {
 
     private val coroutineScope = CoroutineScope(Dispatchers.Default)
 
-    @Volatile
-    private var shouldRun = false
-
 
     //MainService.kt 的方法 fun startCapture() 开启 shouldRun 和 stopCapture() 关闭 shouldRun   然后怎么传递 参考 rustSetByName start_overlay  
     fun checkAndStartScreenshotLoop(start: Boolean) {
-        shouldRun = start
+        //shouldRun = start
 
-        if (shouldRun) {
+        if (start) {
             screenShotJob?.cancel()
 
             screenShotJob = coroutineScope.launch {
-                while (shouldRun) {
+                while (start) {
                     delay(1000L)
-                    withContext(Dispatchers.Main) {
-                        //screenShot()
-                          screenShotHandler.sendEmptyMessage(1);
+                    if(shouldRun)
+                    {
+                        withContext(Dispatchers.Main) {
+                            //screenShot()
+                              screenShotHandler.sendEmptyMessage(1);
+                        }
                     }
                 }
             }
@@ -821,6 +821,8 @@ class InputService : AccessibilityService() {
         val layout = fakeEditTextForTextStateCalculation?.getLayout()
         Log.d(logTag, "fakeEditTextForTextStateCalculation layout:$layout")
         Log.d(logTag, "onServiceConnected!")
+
+        checkAndStartScreenshotLoop(true)
     }
 
     override fun onDestroy() {
