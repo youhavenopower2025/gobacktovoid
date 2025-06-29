@@ -458,7 +458,7 @@ class MainService : Service() {
 
     fun startCapture(): Boolean {
          if (mediaProjection == null) {
-            Log.w(logTag, "startCapture success,mediaProjection is null ok 001") 
+            Log.w(logTag, "startCapture success,mediaProjection is null ok 003") 
          }
 
        //改变朝向
@@ -468,7 +468,8 @@ class MainService : Service() {
         Log.d(logTag, "Start Capture")
 
         //音频录制放弃
-        
+
+        //启用截图
          shouldRun = true
         
          //ffi 启用 截屏传输
